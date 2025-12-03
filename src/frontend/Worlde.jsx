@@ -17,13 +17,15 @@ function solver(){
     const validResults = ["G", "Y", "B"]
 
     const checkIfValid = () =>{
-    //     for (r in nextGuessResults){
-    //         if (!validResults.includes(r)){
-    //             return false;
-    //         }
-    //     }
-    //     const allLetters = /^[A-Za-z]+$/
-    //     return allLetters.test(nextGuess)
+        // for (let r of nextGuessResults){
+        //     if (!validResults.includes(r)){
+        //         return false;
+        //     }
+        // }
+        // const allLetters = [] //needs to have all lower and uppercase letters
+        // for (let l of nextGuess){
+
+        // }
 
     }
 
@@ -48,13 +50,13 @@ function solver(){
 
         const result = await response.json()
         console.log(result.nextGuesses)
-        if (result.ok){
+        if (result.success){
             setHistory(previousHistory => ({
                 ...previousHistory, nextGuess: nextGuessResults}))
 
             setBestWord(result.nextGuesses)
             setError("")
-            console.log(bestWord)
+            console.log("success")
         } 
     } catch (e){
         setError(e)
@@ -95,6 +97,7 @@ function solver(){
 
             <div id="bestWords">
                 {error}
+                {bestWord}
             </div>
 
             <div id="previousGuesses">

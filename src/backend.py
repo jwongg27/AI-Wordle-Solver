@@ -72,7 +72,7 @@ def madeGuess():
 
 
 
-      return jsonify({"nextGuesses": nextguess})
+      return jsonify({"nextGuesses": nextguess, "success": True})
     
     except Exception as e:
        print("error", e)

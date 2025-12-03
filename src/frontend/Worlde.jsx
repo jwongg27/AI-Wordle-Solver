@@ -12,18 +12,18 @@ function solver(){
     const [nextGuess, setNextGuess] = useState("") //user inputs what word they will guess
     const [nextGuessResults, setResults] = useState("") //after guessing on wordle, user inputs results
 
-    const [turn, setTurn] = useState(1)
+    // const [turn, setTurn] = useState(1)
 
     const validResults = ["G", "Y", "B"]
 
     const checkIfValid = () =>{
-        for (r in nextGuessResults){
-            if (!validResults.includes(r)){
-                return false;
-            }
-        }
-        const allLetters = /^[A-Za-z]+$/
-        return allLetters.test(nextGuess)
+    //     for (r in nextGuessResults){
+    //         if (!validResults.includes(r)){
+    //             return false;
+    //         }
+    //     }
+    //     const allLetters = /^[A-Za-z]+$/
+    //     return allLetters.test(nextGuess)
 
     }
 
@@ -31,11 +31,10 @@ function solver(){
 ///
     const handleSubmit = async (e) =>{
     e.preventDefault()
-    let url="http://localhost:5000/madeGuess"
 
-    if (!checkIfValid()){
-        setError("Please change the inputs to what the rules specify")
-    }
+    // if (!checkIfValid()){
+    //     setError("Please change the inputs to what the rules specify")
+    // }
 
     let payload = {nextGuess, nextGuessResults}
     try{
@@ -48,12 +47,14 @@ function solver(){
         })
 
         const result = await response.json()
+        console.log(result.nextGuesses)
         if (result.ok){
             setHistory(previousHistory => ({
                 ...previousHistory, nextGuess: nextGuessResults}))
 
             setBestWord(result.nextGuesses)
             setError("")
+            console.log(bestWord)
         } 
     } catch (e){
         setError(e)
@@ -70,7 +71,7 @@ function solver(){
         <div>
             <h1 id="rules">
                 Rules of AI Wordle Solver
-                
+
             </h1>
 
             <div id="nextGuessForm">
@@ -97,9 +98,9 @@ function solver(){
             </div>
 
             <div id="previousGuesses">
-                {history.map((h) => (
+                {/* {history.map((h) => (
                     <div>{h}</div>
-                ))}
+                ))} */}
             </div>
 
         </div>

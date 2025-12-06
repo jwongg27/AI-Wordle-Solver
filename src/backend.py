@@ -89,12 +89,19 @@ def update(word, result):
    print(result)
    print("word:", word)
    temp = allWordsLeft[:]
+   print(len(temp))
+   print(len(allWordsLeft))
+   for i in range(5):
+      #deal with cases where there is multiple of the same letter and B comes before G
+      currentLetter = word[i]
+      currentResult = result[i]
+      if currentResult == "G":
+         green[i] = currentLetter
+
+
    for i in range(5):
       currentLetter = word[i]
       currentResult = result[i]
-      print("letter:", currentLetter)
-      print("result:", currentResult)
-      print("currentWord:", word)
 
       if currentResult == "G":
         print(" in g")
@@ -115,11 +122,10 @@ def update(word, result):
          if currentLetter.upper() in domain[i]:
           domain[i].remove(currentLetter.upper())
 
-         print(temp[0])
          for w in allWordsLeft:
-            if w[i] == currentLetter:
+            if w[i] == currentLetter.lower():
                #remove if current letter has the letter in the yellow position
-               if word in temp:
+               if w in temp:
                   temp.remove(w)
 
 
@@ -129,7 +135,7 @@ def update(word, result):
 
 
       elif currentResult == "B":
-
+         print("in b")
          for val in domain:
             if currentLetter.upper() in domain[val]:
               domain[val].remove(currentLetter.upper())
@@ -138,10 +144,10 @@ def update(word, result):
          for w in allWordsLeft:
             if currentLetter.lower() in w:
                #the B letter is in the word
-               instanceofLetter = 0
-               for le in green:
-                  if le == currentLetter:
-                     instanceofLetter+=1
+               # instanceofLetter = 0
+               # for le in green:
+               #    if le == currentLetter:
+               #       instanceofLetter+=1
 
                if currentLetter.lower() in green:
                   #multiple instances of the letter, where 1 is green and others are B

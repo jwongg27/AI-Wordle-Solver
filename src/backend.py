@@ -51,6 +51,52 @@ constraints = {
 
 # wordleCSP = WordleCSP(variables, domain, constraints)
 
+@app.post("/reset")
+def resetPost():
+   try:
+      global green
+      global yellow
+      global domain
+      global variables
+      global constraints
+      global allWordsLeft
+
+      green = ["", "", "", "", ""]
+
+          #prioritize words with these letters first
+      yellow = {
+              0:[], 
+              1:[], 
+              2:[],
+              3:[],
+              4:[]
+              }
+      allWordsLeft = onStartup()
+      variables = {0,1,2,3,4}
+      domain = {
+              0: ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", 
+                "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"],
+              1: ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", 
+                "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"],
+              2: ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", 
+                "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"],
+              3: ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", 
+                "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"],
+              4: ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", 
+                "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]}
+
+      constraints = {
+            len(domain[0]) == 1,
+            len(domain[1]) == 1,
+            len(domain[2]) == 1,
+            len(domain[3]) == 1,
+            len(domain[4]) == 1,
+          }
+      return jsonify({"success": True, "allWords": allWordsLeft})
+   except Exception as e:
+      print("resetting failed", e)
+      return jsonify({"success": False})
+
 
 @app.post("/madeGuess")
 def madeGuess():

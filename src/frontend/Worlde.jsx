@@ -30,7 +30,25 @@ function solver(){
     }
 
 
-///
+/// 
+    const resetGame = async (e) => {
+        try {
+            const response = await fetch ("http://127.0.0.1:5000/reset", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+            })
+        
+        setHistory({})
+        setBestWord("ADIEU")
+        setNextGuess("")
+        setResults("")
+        setError("")
+        } catch (e) {
+            console.error(e)
+        }
+    }
     const handleSubmit = async (e) =>{
     e.preventDefault()
 
@@ -91,6 +109,7 @@ function solver(){
                     </div>
 
                     <button type="submit">Get Next Word</button>
+                    <button onClick={resetGame} type="reset">Reset</button>
                 </form>
 
             </div>

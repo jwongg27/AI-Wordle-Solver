@@ -1,218 +1,226 @@
+/*colors were imported from actual wordle website */
 :root {
-          --color-tone-1: #ffffff;
-          --color-tone-2: #818384;
-          --color-tone-3: #565758;
-          --color-tone-4: #3a3a3c;
-          --color-tone-7: #121213;
-          --color-correct: #538d4e;
-          --color-present: #b59f3b;
-          --color-absent: #3a3a3c;
-          --font-stack: 'Helvetica Neue', Arial, sans-serif;
+    --color-tone-1: #ffffff; /*white*/
+    --color-tone-2: #818384;
+    --color-tone-3: #565758;
+    --color-tone-4: #3a3a3c;
+    --color-tone-7: #121213;
+    --color-correct: #538d4e;
+    --color-present: #b59f3b;
+    --color-absent: #3a3a3c;
+    --font-stack: 'Helvetica Neue', Arial, sans-serif;
 }
 
+/*background of page */
 body {
-          background-color: var(--color-tone-7);
-          color: var(--color-tone-1);
-          font-family: var(--font-stack);
-          margin: 0;
-          display: flex;
-          justify-content: center;
-          min-height: 100vh;
+    background-color: var(--color-tone-7);
+    color: var(--color-tone-1);
+    font-family: var(--font-stack);
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
 }
+
 
 .solver-container {
-          width: 100%;
-          max-width: 500px;
-          padding: 20px;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
+    width: 100%;
+    max-width: 500px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 h1#rules {
-          font-weight: 700;
-          letter-spacing: 0.1em;
-          text-transform: uppercase;
-          border-bottom: 1px solid var(--color-tone-4);
-          padding-bottom: 15px;
-          margin-bottom: 30px;
-          text-align: center;
-          width: 100%;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--color-tone-4);
+    padding-bottom: 15px;
+    margin-bottom: 30px;
+    text-align: center;
+    width: 100%;
 }
 .form-container {
-          width: 100%;
-          background-color: var(--color-tone-7);
-          padding: 20px;
-          border: 1px solid var(--color-tone-4);
-          border-radius: 8px;
-          margin-bottom: 25px;
+    width: 100%;
+    background-color: var(--color-tone-7);
+    padding: 20px;
+    border: 1px solid var(--color-tone-4);
+    border-radius: 8px;
+    margin-bottom: 25px;
 }
 
 .input-group {
-          margin-bottom: 20px;
-          display: flex;
-          flex-direction: column;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
 }
 
 .input-group label {
-          margin-bottom: 8px;
-          font-weight: 600;
-          color: var(--color-tone-2);
-          font-size: 0.9rem;
-          text-transform: uppercase;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--color-tone-2);
+    font-size: 0.9rem;
+    text-transform: uppercase;
 }
 
 .input-group input {
-          padding: 15px;
-          font-size: 1.2rem;
-          background-color: transparent;
-          border: 2px solid var(--color-tone-4);
-          color: var(--color-tone-1);
-          border-radius: 4px;
-          text-transform: uppercase;
-          letter-spacing: 0.2em;
-          font-weight: bold;
-          text-align: center;
+    padding: 15px;
+    font-size: 1.2rem;
+    background-color: transparent;
+    border: 2px solid var(--color-tone-4);
+    color: var(--color-tone-1);
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    font-weight: bold;
+    text-align: center;
 }
 
 .input-group input:focus {
-          outline: none;
-          border-color: var(--color-tone-2);
+    outline: none;
+    border-color: var(--color-tone-2);
 }
 
 .button-container {
-          display: flex;
-          gap: 15px;
+    display: flex;
+    gap: 15px;
 }
 
 button {
-          flex: 1;
-          padding: 15px;
-          font-size: 1rem;
-          font-weight: bold;
-          border: none;
-          border-radius: 4px;
-          cursor: pointer;
-          text-transform: uppercase;
-          transition: opacity 0.2s;
+    flex: 1;
+    padding: 15px;
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: opacity 0.2s;
 }
 
 button:hover {
-          opacity: 0.9;
+    opacity: 0.9;
 }
 
 .submit-btn {
-          background-color: var(--color-correct);
-          color: white;
+    background-color: var(--color-correct);
+    color: white;
 }
 
 .reset-btn {
-          background-color: var(--color-tone-4);
-          color: var(--color-tone-1);
+    background-color: var(--color-tone-4);
+    color: var(--color-tone-1);
 }
 .suggestion-box {
-          width: 100%;
-          text-align: center;
-          padding: 25px;
-          background-color: var(--color-tone-4);
-          border-radius: 8px;
-          margin-bottom: 25px;
-          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    text-align: center;
+    padding: 25px;
+    background-color: var(--color-tone-4);
+    border-radius: 8px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
 .suggestion-label {
-          font-size: 1rem;
-          color: var(--color-tone-2);
-          margin-bottom: 10px;
-          text-transform: uppercase;
+    font-size: 1rem;
+    color: var(--color-tone-2);
+    margin-bottom: 10px;
+    text-transform: uppercase;
 }
 
 .the-word {
-          font-size: 3rem;
-          font-weight: 800;
-          letter-spacing: 0.1em;
-          color: var(--color-correct);
-          text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    font-size: 3rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    color: var(--color-correct);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .error-message {
-          color: #ff6b6b;
-          background-color: rgba(255, 107, 107, 0.1);
-          padding: 10px;
-          border-radius: 4px;
-          margin-bottom: 15px;
-          font-weight: bold;
+    color: #ff6b6b;
+    background-color: rgba(255, 107, 107, 0.1);
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    font-weight: bold;
 }
 .history-container {
-          width: 100%;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .history-container h3 {
-          text-transform: uppercase;
-          color: var(--color-tone-2);
-          border-bottom: 1px solid var(--color-tone-4);
-          width: 100%;
-          text-align: center;
-          padding-bottom: 10px;
+    text-transform: uppercase;
+    color: var(--color-tone-2);
+    border-bottom: 1px solid var(--color-tone-4);
+    width: 100%;
+    text-align: center;
+    padding-bottom: 10px;
 }
 
 .history-list {
-          display: flex;
-          flex-direction: column;
-          gap: 10px;
-          margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 15px;
 }
 
 .history-row {
-          display: flex;
-          align-items: center;
-          gap: 15px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
 }
 
 .turn-number {
-          font-weight: bold;
-          color: var(--color-tone-3);
-          font-size: 0.9rem;
-          width: 30px;
+    font-weight: bold;
+    color: var(--color-tone-3);
+    font-size: 0.9rem;
+    width: 30px;
 }
 
 .word-grid {
-          display: grid;
-          grid-template-columns: repeat(5, 1fr);
-          gap: 5px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 5px;
 }
-.tile {
-          width: 50px;
-          height: 50px;
-          border: 2px solid var(--color-tone-4);
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          font-size: 1.8rem;
-          font-weight: bold;
-          text-transform: uppercase;
-          user-select: none;
-          box-sizing: border-box;
-}
-
-.tile.G {
-          background-color: var(--color-correct);
-          border-color: var(--color-correct);
-          color: white;
+.tile /*tile colors */ 
+{
+    width: 50px;
+    height: 50px;
+    border: 2px solid var(--color-tone-4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.8rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    user-select: none;
+    box-sizing: border-box;
 }
 
-.tile.Y {
-          background-color: var(--color-present);
-          border-color: var(--color-present);
-          color: white;
+.tile.G /*Green*/
+{
+    background-color: var(--color-correct);
+    border-color: var(--color-correct);
+    color: white;
 }
 
-.tile.B {
-          background-color: var(--color-absent);
-          border-color: var(--color-absent);
-          color: white;
-          
+.tile.Y /*Yellow*/
+{
+    background-color: var(--color-present);
+    border-color: var(--color-present);
+    color: white;
+}
+
+
+.tile.B /*Gray*/ 
+{
+    background-color: var(--color-absent);
+    border-color: var(--color-absent);
+    color: white;
+    
 }

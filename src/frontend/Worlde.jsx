@@ -32,6 +32,12 @@ function Solver(){
 
 /// 
     const resetGame = async (e) => {
+        setHistory([])
+        setBestWord("ADIEU")
+        setNextGuess("")
+        setResults("")
+        setError("")
+        
         try {
             const response = await fetch ("http://127.0.0.1:5000/reset", {
                 method: "POST",
@@ -40,11 +46,6 @@ function Solver(){
                 },
             })
         
-        setHistory([])
-        setBestWord("ADIEU")
-        setNextGuess("")
-        setResults("")
-        setError("")
         } catch (e) {
             console.error(e)
         }
@@ -132,15 +133,15 @@ function Solver(){
                 <div className="history-list">
                     {history.map((h, index) => (
                         <div key={index} className="history-row">
-                            <span className="turn-number">
+                            <span className="turn-number">#{index + 1}</span>
+
                             <div className="word-grid">
                                 {h.word.split('').map((letter, i) => (
-                                    <span key={i} className={'tile ${h.result[i]}'}>
+                                    <span key={i} className={`tile ${h.result[i]}`}>
                                         {letter}
                                     </span>
                                 ))}
                             </div>
-                            </span>
                         </div>
                     ))}
                 </div>

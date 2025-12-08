@@ -1,8 +1,8 @@
 import "./wordle.css";
 import React, { useState, useEffect} from 'react'
 
-function solver(){
-    const [history, setHistory] = useState({})
+function Solver(){
+    const [history, setHistory] = useState([])
 
     const [bestWord, setBestWord] = useState("ADIEU") //the next best word to use
 
@@ -40,7 +40,7 @@ function solver(){
                 },
             })
         
-        setHistory({})
+        setHistory([])
         setBestWord("ADIEU")
         setNextGuess("")
         setResults("")
@@ -50,36 +50,41 @@ function solver(){
         }
     }
     const handleSubmit = async (e) =>{
-    e.preventDefault()
+        e.preventDefault()
 
     // if (!checkIfValid()){
     //     setError("Please change the inputs to what the rules specify")
     // }
 
-    let payload = {nextGuess, nextGuessResults}
-    try{
-        const response = await fetch ("http://127.0.0.1:5000/madeGuess", {
-            method: "POST",
-            headers: {
+        let payload = {nextGuess, nextGuessResults}
+        try{
+            const response = await fetch ("http://127.0.0.1:5000/madeGuess", {
+                method: "POST",
+                headers: {
                 "Content-Type": "application/json"
-        },
+            },
             body: JSON.stringify(payload)
-        })
+            })
 
-        const result = await response.json()
-        console.log(result.nextGuesses)
-        if (result.success){
-            setHistory(previousHistory => ({
-                ...previousHistory, nextGuess: nextGuessResults}))
+            const result = await response.json()
+            console.log(result.nextGuesses)
+            if (result.success){
+                setHistory(previousHistory => [
+                    ...previousHistory,
+                    { word: nextGuess, result: nextGuessResults}
+                ])
 
-            setBestWord(result.nextGuesses)
-            setError("")
-            console.log("success")
-        } 
-    } catch (e){
-        setError(e)
-        console.error(e)
-    }
+                setBestWord(result.nextGuesses)
+                setNextGuess("")
+                setResults("")
+                setError("")
+                console.log("success")
+            } 
+        } catch (e){
+            setError(e)
+            console.error(e)
+        }
+    
 
 
 
@@ -88,45 +93,62 @@ function solver(){
 }
 
     return(
-        <div>
+        <div className="solver-container">
             <h1 id="rules">
-                Rules of AI Wordle Solver
+                Wordle Solver
 
             </h1>
 
-            <div id="nextGuessForm">
+            <div id="nextGuessForm" className="form-container">
                 <form onSubmit={handleSubmit}>
-                    <div>
+                    <div className="input-group">
                     <label htmlFor="">Next Guess:</label>
-                    <input type="text" value={nextGuess} 
-                    onChange={(e) => setNextGuess(e.target.value)}/>
+                    <input id = "guessInput" type="text" value={nextGuess} maxLength={5} placeholder="APPLE" 
+                    onChange={(e) => setNextGuess(e.target.value.toUpperCase())}/>
                     </div>
 
-                    <div>
+                    <div className="input-group">
                     <label htmlFor="">Results of Guess (G, Y, B):</label>
-                    <input type="text" value={nextGuessResults}
-                    onChange={(e) => setResults(e.target.value)}/>
+                    <input id = "resultInput" type="text" value={nextGuessResults} maxLength={5} placeholder="GBYBG"
+                    onChange={(e) => setResults(e.target.value.toUpperCase())}/>
                     </div>
-
-                    <button type="submit">Get Next Word</button>
-                    <button onClick={resetGame} type="reset">Reset</button>
+                <div className="button-container">
+                    <button type="submit" className="submit-btn">Get Next Word</button>
+                    <button onClick={resetGame} type="button" className="reset-btn">Reset</button>
+                </div>
                 </form>
 
             </div>
 
-            <div id="bestWords">
+            <div id="bestWords" className="suggestion-box">
                 {error}
-                {bestWord}
+                <div className="suggestion-label">Recommended Guess:</div>
+                <div className="the-word">{bestWord}</div>
+            
             </div>
 
-            <div id="previousGuesses">
-                {/* {history.map((h) => (
-                    <div>{h}</div>
-                ))} */}
+            <div id="previousGuesses" className="history-container">
+                <h3>History:</h3>
+                <div className="history-list">
+                    {history.map((h, index) => (
+                        <div key={index} className="history-row">
+                            <span className="turn-number">
+                            <div className="word-grid">
+                                {h.word.split('').map((letter, i) => (
+                                    <span key={i} className={'tile ${h.result[i]}'}>
+                                        {letter}
+                                    </span>
+                                ))}
+                            </div>
+                            </span>
+                        </div>
+                    ))}
+                </div>
             </div>
-
         </div>
     )
+                
+    
 
 
 }
@@ -135,4 +157,4 @@ function solver(){
 
 
 
-export default solver
+export default Solver

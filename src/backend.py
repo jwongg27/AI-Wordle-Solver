@@ -41,13 +41,13 @@ domain = {
         4: ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", 
           "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]}
     
-constraints = {
-      len(domain[0]) == 1,
-      len(domain[1]) == 1,
-      len(domain[2]) == 1,
-      len(domain[3]) == 1,
-      len(domain[4]) == 1,
-    }
+constraints = [
+      green[0] != "",
+      green[1] != "",
+      green[2] != "",
+      green[3] != "",
+      green[4] != "",
+    ]
 
 # wordleCSP = WordleCSP(variables, domain, constraints)
 
@@ -97,7 +97,6 @@ def resetPost():
       print("resetting failed", e)
       return jsonify({"success": False})
 
-
 @app.post("/madeGuess")
 def madeGuess():
     # return jsonify({"nextGuesses": allWordsLeft})
@@ -115,10 +114,10 @@ def madeGuess():
 
       nextguess = optimalGuess()
 
+      cons = check()
+      print("solved:",cons)
 
-
-
-      return jsonify({"nextGuesses": nextguess, "success": True})
+      return jsonify({"nextGuesses": nextguess, "success": True, "solved": cons})
     
     except Exception as e:
        print("error", e)
@@ -128,6 +127,9 @@ def madeGuess():
 def update(word, result):
    global allWordsLeft
    global green
+   if not allWordsLeft:
+      print("no words found")
+      return
    word = word.lower()
    result = result.upper()
    print("allwordsleft:", allWordsLeft[0])
@@ -137,12 +139,21 @@ def update(word, result):
    temp = allWordsLeft[:]
    print(len(temp))
    print(len(allWordsLeft))
+
+   # currentYellow = ["","","","",""]
+   #same idea as the loop above
    for i in range(5):
       #deal with cases where there is multiple of the same letter and B comes before G
       currentLetter = word[i]
       currentResult = result[i]
       if currentResult == "G":
          green[i] = currentLetter
+
+      elif currentResult == "Y":
+         yellow[i].append(currentLetter)
+
+
+
 
 
    for i in range(5):
@@ -162,7 +173,6 @@ def update(word, result):
 
       elif currentResult == "Y":
          
-         print("in y")
          yellow[i].append(currentLetter)
 
          if currentLetter.upper() in domain[i]:
@@ -195,11 +205,29 @@ def update(word, result):
                #    if le == currentLetter:
                #       instanceofLetter+=1
 
-               if currentLetter.lower() in green:
-                  #multiple instances of the letter, where 1 is green and others are B
+               inyellow = False
+               for arr in yellow:
+                  if currentLetter.lower() in yellow[arr]:
+                     inyellow = True
+
+               if inyellow:
+                  #if in yellow, then just remove words with the letter in this index
+                  print("in yellow", currentLetter)
                   if w[i] == currentLetter.lower() and w in temp:
-                     #if the word has a B letter in that position, remove no matter what
                      temp.remove(w)
+               # elif currentLetter.lower() in green:
+               #    # multiple instances of the letter, where 1 is green and others are B
+               #    # if the word has a B letter in that position, remove no matter what
+               #    # but if it is not in yellow and is black, but is in green
+               #    # remove every word where the greens of the currentletter doesnt match
+               #    print("in the green section", currentLetter)
+               #    for greenLetters in green:
+               #       if greenLetters.lower() == currentLetter.lower() and w[i] != green[i] and w in temp:
+               #          temp.remove(w)
+
+               elif w[i] == currentLetter.lower() and w in temp:
+                  temp.remove(w)
+
                elif currentLetter.lower() not in green and w in temp:
                   temp.remove(w)
 
@@ -222,6 +250,13 @@ def optimalGuess():
          bestword = word
          bestwordscore = score
    return bestword
+
+
+def check():
+   for c in constraints:
+      if c == False:
+         return False
+   return True
 
 
 def onStartup():

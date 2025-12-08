@@ -215,7 +215,7 @@ def update(word, result):
                   print("in yellow", currentLetter)
                   if w[i] == currentLetter.lower() and w in temp:
                      temp.remove(w)
-               # elif currentLetter.lower() in green:
+               elif currentLetter.lower() in green:
                #    # multiple instances of the letter, where 1 is green and others are B
                #    # if the word has a B letter in that position, remove no matter what
                #    # but if it is not in yellow and is black, but is in green
@@ -225,8 +225,8 @@ def update(word, result):
                #       if greenLetters.lower() == currentLetter.lower() and w[i] != green[i] and w in temp:
                #          temp.remove(w)
 
-               elif w[i] == currentLetter.lower() and w in temp:
-                  temp.remove(w)
+                  if w[i] == currentLetter.lower() and w in temp:
+                     temp.remove(w)
 
                elif currentLetter.lower() not in green and w in temp:
                   temp.remove(w)

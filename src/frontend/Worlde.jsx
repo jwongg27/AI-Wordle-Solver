@@ -6,6 +6,8 @@ function Solver(){
 
     const [bestWord, setBestWord] = useState("ADIEU") //the next best word to use
 
+    const startingWords = ["RAISE", "STARE", "SLATE", "CRANE", "SALET", "ADIEU"];
+
     const [error, setError] = useState("")
     const [isLoading, setLoading] = useState(false)
 
@@ -99,6 +101,32 @@ function Solver(){
                 Wordle Solver
 
             </h1>
+
+            <div className="rules-box">
+                <h3>How to use</h3>
+                <ul>
+                    <li>Only use on <strong>NYTimes Wordle</strong>.</li>
+                    <li>Enter the <strong>Recommended Guess</strong> into the real game.</li>
+                    <li>Input the colors you got: <strong>G</strong> = Green, <strong>Y</strong> = Yellow, <strong>B</strong> = Grey.</li>
+                    <li>Click <strong>Get Next Word</strong> to continue.</li>
+                </ul>
+            </div>
+
+            <div className="starters-section">
+                <p className="starters-label">Best Starting Words:</p>
+                <div className="starters-list">
+                    {startingWords.map((word) => (
+                        <button
+                            key={word}
+                            type="button"
+                            className="starter-chip"
+                            onClick={() => setNextGuess(word)}
+                        >
+                            {word}
+                        </button>
+                    ))}
+                </div>
+            </div>
 
             <div id="nextGuessForm" className="form-container">
                 <form onSubmit={handleSubmit}>

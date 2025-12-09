@@ -1,5 +1,4 @@
 from flask import Flask, request, jsonify
-from WordleCSP import WordleCSP
 from flask_cors import CORS
 import traceback
 
@@ -26,7 +25,7 @@ yellow = {
         }
 
 #all lowercase variables
-allWordsLeft = ["allow", "fruit"]
+allWordsLeft = []
 
 variables = {0,1,2,3,4}
 domain = {
@@ -49,7 +48,6 @@ constraints = [
       green[4] != "",
     ]
 
-# wordleCSP = WordleCSP(variables, domain, constraints)
 
 @app.post("/reset")
 def resetPost():
@@ -86,11 +84,11 @@ def resetPost():
                 "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]}
 
       constraints = {
-            len(domain[0]) == 1,
-            len(domain[1]) == 1,
-            len(domain[2]) == 1,
-            len(domain[3]) == 1,
-            len(domain[4]) == 1,
+            green[0] != "",
+            green[1] != "",
+            green[2] != "",
+            green[3] != "",
+            green[4] != "",
           }
       return jsonify({"success": True, "allWords": allWordsLeft})
    except Exception as e:
@@ -99,17 +97,24 @@ def resetPost():
 
 @app.post("/madeGuess")
 def madeGuess():
-    # return jsonify({"nextGuesses": allWordsLeft})
 
-    print("zzz")
     try:
       data = request.get_json()
       word = data.get("nextGuess")
       result = data.get("nextGuessResults")
-
-      # return jsonify({"nextGuesses": type(wordleCSP)})
       word = word.lower()
       result = result.upper()
+
+      lowercaseAlphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", 
+                            "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
+      resultLetters = ["G", "Y", "B"]
+
+
+      word = word.lower()
+      result = result.upper()
+      if len(word) != 5 or len(result) != 5 or all(l not in lowercaseAlphabet for l in word) or all(r not in resultLetters for r in result):
+         return ({"success": False, "error": "Wrong Format"})
+
       update(word, result)
 
       nextguess = optimalGuess()
@@ -132,16 +137,10 @@ def update(word, result):
       return
    word = word.lower()
    result = result.upper()
-   print("allwordsleft:", allWordsLeft[0])
-   print("updating")
-   print(result)
-   print("word:", word)
-   temp = allWordsLeft[:]
-   print(len(temp))
-   print(len(allWordsLeft))
 
-   # currentYellow = ["","","","",""]
-   #same idea as the loop above
+   #allWordsLeft needs to be kept unchanged atm since it is being looped through
+   temp = allWordsLeft[:]
+
    for i in range(5):
       #deal with cases where there is multiple of the same letter and B comes before G
       currentLetter = word[i]
@@ -161,7 +160,6 @@ def update(word, result):
       currentResult = result[i]
 
       if currentResult == "G":
-        print(" in g")
         green[i] = currentLetter.lower() #lowercase
         domain[i] = [currentLetter]
 
@@ -191,20 +189,13 @@ def update(word, result):
 
 
       elif currentResult == "B":
-         print("in b")
          for val in domain:
-            if currentLetter.upper() in domain[val]:
+            if currentLetter.upper() in domain[val] and (currentLetter not in green or all(currentLetter not in yellow[y] for y in yellow)):
               domain[val].remove(currentLetter.upper())
           
 #need to account for edge case were there is 1 green and 1 black for a letter in a word
          for w in allWordsLeft:
             if currentLetter.lower() in w:
-               #the B letter is in the word
-               # instanceofLetter = 0
-               # for le in green:
-               #    if le == currentLetter:
-               #       instanceofLetter+=1
-
                inyellow = False
                for arr in yellow:
                   if currentLetter.lower() in yellow[arr]:
@@ -212,19 +203,10 @@ def update(word, result):
 
                if inyellow:
                   #if in yellow, then just remove words with the letter in this index
-                  print("in yellow", currentLetter)
                   if w[i] == currentLetter.lower() and w in temp:
                      temp.remove(w)
                elif currentLetter.lower() in green:
-               #    # multiple instances of the letter, where 1 is green and others are B
-               #    # if the word has a B letter in that position, remove no matter what
-               #    # but if it is not in yellow and is black, but is in green
-               #    # remove every word where the greens of the currentletter doesnt match
-               #    print("in the green section", currentLetter)
-               #    for greenLetters in green:
-               #       if greenLetters.lower() == currentLetter.lower() and w[i] != green[i] and w in temp:
-               #          temp.remove(w)
-
+                  # multiple instances of the letter, where 1 is green and others are B
                   if w[i] == currentLetter.lower() and w in temp:
                      temp.remove(w)
 
@@ -253,10 +235,7 @@ def optimalGuess():
 
 
 def check():
-   for c in constraints:
-      if c == False:
-         return False
-   return True
+   return all(g != "" for g in green) and len(allWordsLeft) == 1
 
 
 def onStartup():

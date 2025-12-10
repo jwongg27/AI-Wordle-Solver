@@ -1,4 +1,6 @@
 /*colors were imported from actual wordle website */
+/*since AI tools were allowed to be used for the project as stated by the professor,
+we used chatGPT to generate a basic tempalte of a css file to start with*/
 :root {
     --white: #ffffff;  /*white*/
     --grey: #818384;

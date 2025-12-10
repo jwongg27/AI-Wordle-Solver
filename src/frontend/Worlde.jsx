@@ -1,7 +1,7 @@
 import "./wordle.css";
-import React, { useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 
-function Solver(){
+function Solver() {
     const [history, setHistory] = useState([])
 
     const [bestWord, setBestWord] = useState("ADIEU") //the next best word to use
@@ -18,7 +18,7 @@ function Solver(){
 
     const validResults = ["G", "Y", "B"]
 
-    const checkIfValid = () =>{
+    const checkIfValid = () => {
         // for (let r of nextGuessResults){
         //     if (!validResults.includes(r)){
         //         return false;
@@ -32,49 +32,49 @@ function Solver(){
     }
 
 
-/// 
+    /// 
     const resetGame = async (e) => {
         setHistory([])
         setBestWord("ADIEU")
         setNextGuess("")
         setResults("")
         setError("")
-        
+
         try {
-            const response = await fetch ("http://127.0.0.1:5000/reset", {
+            const response = await fetch("http://127.0.0.1:5000/reset", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
             })
-        
+
         } catch (e) {
             console.error(e)
         }
     }
-    const handleSubmit = async (e) =>{
+    const handleSubmit = async (e) => {
         e.preventDefault()
 
-    // if (!checkIfValid()){
-    //     setError("Please change the inputs to what the rules specify")
-    // }
+        // if (!checkIfValid()){
+        //     setError("Please change the inputs to what the rules specify")
+        // }
 
-        let payload = {nextGuess, nextGuessResults}
-        try{
-            const response = await fetch ("http://127.0.0.1:5000/madeGuess", {
+        let payload = { nextGuess, nextGuessResults }
+        try {
+            const response = await fetch("http://127.0.0.1:5000/madeGuess", {
                 method: "POST",
                 headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(payload)
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(payload)
             })
 
             const result = await response.json()
             console.log(result.nextGuesses)
-            if (result.success){
+            if (result.success) {
                 setHistory(previousHistory => [
                     ...previousHistory,
-                    { word: nextGuess, result: nextGuessResults}
+                    { word: nextGuess, result: nextGuessResults }
                 ])
 
                 setBestWord(result.nextGuesses)
@@ -82,20 +82,20 @@ function Solver(){
                 setResults("")
                 setError("")
                 console.log("success")
-            } 
-        } catch (e){
+            }
+        } catch (e) {
             setError(e)
             console.error(e)
         }
-    
 
 
 
 
-    /// end of handle submit
-}
 
-    return(
+        /// end of handle submit
+    }
+
+    return (
         <div className="solver-container">
             <h1 id="rules">
                 Wordle Solver
@@ -131,20 +131,20 @@ function Solver(){
             <div id="nextGuessForm" className="form-container">
                 <form onSubmit={handleSubmit}>
                     <div className="input-group">
-                    <label htmlFor="">Next Guess:</label>
-                    <input id = "guessInput" type="text" value={nextGuess} maxLength={5} placeholder="APPLE" 
-                    onChange={(e) => setNextGuess(e.target.value.toUpperCase())}/>
+                        <label htmlFor="">Next Guess:</label>
+                        <input id="guessInput" type="text" value={nextGuess} maxLength={5} placeholder="APPLE"
+                            onChange={(e) => setNextGuess(e.target.value.toUpperCase())} />
                     </div>
 
                     <div className="input-group">
-                    <label htmlFor="">Results of Guess (G, Y, B):</label>
-                    <input id = "resultInput" type="text" value={nextGuessResults} maxLength={5} placeholder="GBYBG"
-                    onChange={(e) => setResults(e.target.value.toUpperCase())}/>
+                        <label htmlFor="">Results of Guess (G, Y, B):</label>
+                        <input id="resultInput" type="text" value={nextGuessResults} maxLength={5} placeholder="GBYBG"
+                            onChange={(e) => setResults(e.target.value.toUpperCase())} />
                     </div>
-                <div className="button-container">
-                    <button type="submit" className="submit-btn">Get Next Word</button>
-                    <button onClick={resetGame} type="button" className="reset-btn">Reset</button>
-                </div>
+                    <div className="button-container">
+                        <button type="submit" className="submit-button">Get Next Word</button>
+                        <button onClick={resetGame} type="button" className="reset-button">Reset</button>
+                    </div>
                 </form>
 
             </div>
@@ -152,11 +152,11 @@ function Solver(){
             <div id="bestWords" className="suggestion-box">
                 {error}
                 <div className="suggestion-label">Recommended Guess:</div>
-                <div className="the-word">{bestWord}</div>
-            
+                <div className="recommended-word">{bestWord}</div>
+
             </div>
 
-            <div id="previousGuesses" className="history-container">
+            <div id="previousGuesses" className="history-header">
                 <h3>History:</h3>
                 <div className="history-list">
                     {history.map((h, index) => (
@@ -176,8 +176,8 @@ function Solver(){
             </div>
         </div>
     )
-                
-    
+
+
 
 
 }
